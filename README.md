@@ -47,6 +47,12 @@ D:\apache-jmeter-5.6.3\bin\B18\
 
 ## Test Scenarios
 
+### Admin Log-in
+- **Threads:** 5 | **Ramp-up:** 120s |
+- Admin Log in required before initiating any task
+- Flow: `Admin Login →  Read OTP → Verify OTP `
+- Endpoint: `POST /user/login`
+
 ### Thread Group 1 — Deposit
 - **Threads:** 5 | **Ramp-up:** 120s | **Loop:** 2 (10 deposits total)
 - 5 agents each deposit to 2 customers
@@ -98,19 +104,15 @@ Open: B18\reports\html\index.html
 
 ## Test Report
 
-### Request Summary
+### Report Summary and Statistics
+<img width="1579" height="739" alt="image" src="https://github.com/user-attachments/assets/cb797ab1-0cc1-48e2-af8b-02f2e7a8892c" />
+<img width="1616" height="318" alt="image" src="https://github.com/user-attachments/assets/83201f02-4a75-416f-8e7f-1d86e9cf7f0c" />
 
-
-### Statistics
-
-
----
 
 ## Key Implementation Details
 
 - **OTP Flow:** Each login triggers an OTP sent to the Gmail inbox. The JSR223 Groovy script fetches the latest message ID, the HTTP GET reads the email body, and the Regex Extractor pulls out the 4-digit OTP.
 - **Token Reuse:** Admin Login runs once per thread outside the Loop Controller. The token is reused for all loop iterations, avoiding redundant logins.
 - **Dynamic Amounts:** Transaction amounts are randomized between 10 and 50 using the Random Variable Controller to prevent account balances from depleting.
-- **Gmail Aliases:** The `+alias` trick (`tashfia.islam102938+jagent1@gmail.com`) gives each agent and customer a unique email while all OTPs arrive in one inbox.
 
 
